@@ -21,8 +21,6 @@ angular.module('starter.controllers', [])
   $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
+.controller('ConfigCtrl', function($scope, Search) {
+    $scope.name = Search.get('http://www.generadormemes.com/media/templates/pato.jpg');
 });

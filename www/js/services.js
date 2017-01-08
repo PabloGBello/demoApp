@@ -47,4 +47,35 @@ angular.module('starter.services', [])
       return null;
     }
   };
+})
+
+.factory('Search', function($http) {
+    
+  // Basic Google URL + Image Search Query
+  var url = "https://www.google.com/searchbyimage?image_url=";
+    
+  //Result - Array of Images  
+  var postResult = [];
+  
+  //Retrieve raw data from Google Image Search    
+  function getImageData(imageURL){
+    $http.post(url+imageURL)
+        .success(function(data){
+            console.log(data);
+            return data;
+        })
+        .error(function(error){
+            console.log(error);
+            return null;
+        });
+  }  
+  
+  //Return de main object
+  return {
+    getData: function(imageURL) {
+        getImageData(imageURL);
+        return "Prueba";
+    }
+  };
 });
+
