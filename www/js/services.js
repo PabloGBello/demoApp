@@ -59,22 +59,23 @@ angular.module('starter.services', [])
   
   //Retrieve raw data from Google Image Search    
   function getImageData(imageURL){
-    $http.post(url+imageURL)
-        .success(function(data){
-            console.log(data);
-            return data;
-        })
-        .error(function(error){
-            console.log(error);
-            return null;
+    return $http.post(url+imageURL)
+        .then(function(response){
+            return Parse(response.data);
         });
   }  
+
+  //Multi parse extraction
+  function Parse(Data){
+    //var start = findStart(Data, 0);
+    return Data.substring(10);
+  }
   
-  //Return de main object
+
+  //Main function
   return {
     getData: function(imageURL) {
-        getImageData(imageURL);
-        return "Prueba";
+        return getImageData(imageURL);
     }
   };
 });

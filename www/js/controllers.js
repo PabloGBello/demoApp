@@ -22,5 +22,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ConfigCtrl', function($scope, Search) {
-    $scope.name = Search.get('http://www.generadormemes.com/media/templates/pato.jpg');
-});
+    Search.getData('http://www.generadormemes.com/media/templates/pato.jpg')
+        .then(function(data){
+            $scope.name = data;  
+        });
+})
