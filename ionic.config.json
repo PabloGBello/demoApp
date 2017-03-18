@@ -1,4 +1,5 @@
 {
   "name": "demoapp",
-  "app_id": ""
+  "app_id": "",
+  "defaultBrowser": "chrome"
 }
