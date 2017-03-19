@@ -1,15 +1,9 @@
 <ion-view view-title="Config">
   <ion-content class="outer-content">
-      <ion-item>
-        <label class="item item-select" id="home-select1">
-        <span class="input-label">Tamaño</span>
-        <select>
-          <option>Todos</option>
-          <option>Tamaño Grande</option>
-          <option>Tamaño Mediano</option>
-        </select>
-      </label>
-      </ion-item>
-      {{name}}
-    </ion-content>
+   <div class="row responsive-md">
+    <div class="col " ng-repeat="image in images">
+        <img ng-src="{{image.src}}" width="100%" />
+    </div>
+   </div>
+  </ion-content>
 </ion-view>

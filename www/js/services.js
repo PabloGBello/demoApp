@@ -84,19 +84,56 @@ angular.module('starter.services', [])
   };
 
   // Basic Google URL + Image Search Query
-  var url = "https://www.google.com/search?tbm=isch";
+  const url = "https://www.google.com/";
     
   //Result - Array of Images  
   var postResult = [];
   
   //Retrieve raw data from Google Image Search    
   function getImageData(imageURL){
-    var site = url+"&q="+imageURL+"&site=imghp";
-    return $http.get(site)
-        .then(function(response){
-            return Parse(response.data);
-        });
+    var site = url+"search?tbm=isch&q="+imageURL+"&site=imghp&gws_rd=cr";
+    //return site;
+    return getSearchURL(site)
+    	.then(function(resultSite){
+    		return getSimilarImagesURL(resultSite)
+    			.then(function(resultSite){
+    				return $http.get(resultSite)
+				        .then(function(response){
+				            return Parse(response.data);
+				        });
+		        }); 
+    	});
   }  
+
+  //GET the first url 
+  function getSearchURL(site){
+  	return $http.get(site)
+        .then(function(response){
+            return ParseFirstURL(response.data);
+        });
+  }
+
+  function ParseFirstURL(URLResult){
+  	var iIndex = URLResult.indexOf("<a href=\"/searchbyimage?site=imghp&amp;image_url=");
+  	var fIndex = URLResult.indexOf(">search by image</a>");
+  	return url + URLResult.substring(iIndex + 10,fIndex - 1).replace(/&amp;/g ,'&');
+  }
+
+
+  //GET the second url
+  function getSimilarImagesURL(site){
+ 	return $http.get(site)
+        .then(function(response){
+            return ParseSecondURL(response.data);
+        }); 	
+  }
+
+  function ParseSecondURL(URLResult){
+  	var iIndex = URLResult.indexOf("<a class=\"_Eu\" href=\"/search?sa");
+  	var fIndex = URLResult.indexOf(">Visually similar images</a>");
+  	return url + URLResult.substring(iIndex + 22,fIndex - 1).replace(/&amp;/g,'&');
+  }
+
 
   //Multi parse extraction
   function Parse(SearchResult){
@@ -270,13 +307,6 @@ angular.module('starter.services', [])
 	  }
   	  start = findStart(SearchResult, end + 4);
   	}
-	// if (!GoogleImageSearchLoader.sCall.isCanceled()) {
-		// GoogleImageSearchLoader.sRunning = false;
-		// if (count == 100) {
-			// GoogleImageSearchLoader.sMore = true;
-		// }
-		// EventBusHolder.get().post(event);
-	// }
 	 return result;
   }
 
