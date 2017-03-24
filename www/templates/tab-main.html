@@ -1,21 +1,27 @@
 <ion-view view-title="Main Tab">
   <ion-content>
 
-    <div class="list">
-        <li class="item">
-            <button class="button button-full button-positive">
-                Choose any image
-            </button>
-        </li>
-         <li class="item">
-            <a class="post button button-full button-positive" href="{{url}}">
-                Upload
-            </a>
-        </li>
-        <li class="item">
-            <img ng-src="{{imageData}}" alt="Goku with glasses">
-        </li>
-    </div> 
+        <div class="list">
+            <li class="item">
+                <button class="button button-full button-positive icon-right ion-search" ng-click="selectImage()">
+                    Seleccionar Imagen
+                </button>
+            </li>
+            <li class="item">
+                <div class="card">
+                  <div class="item item-text-wrap">
+                    {{imageURI}}
+                  </div>
+                </div>
+            </li> 
+            <!--<li class="item">
+                <img id="myImage" ng-src="{{collection.selectedImage}}" style="width:50%; height: 50%;"/> 
+            </li>-->
+        </div> 
 
   </ion-content>
 </ion-view>
+
+
+
+

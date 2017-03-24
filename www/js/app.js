@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-var theApp = angular.module('theApp', ['ionic', 'theApp.controllers', 'theApp.services', 'ngCordova']);
+var theApp = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova']);
 
 theApp.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -17,12 +17,10 @@ theApp.run(function($ionicPlatform) {
         cordova.plugins.Keyboard.disableScroll(true);
 
     }
-
     if (window.StatusBar) {
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
     }
-
   });
 });
 
@@ -41,16 +39,18 @@ theApp.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'templates/tabs.html'
   })
 
+  // Each tab has its own nav history stack:
+
   .state('tab.main', {
     url: '/main',
     views: {
       'tab-main': {
         templateUrl: 'templates/tab-main.html',
-        controller: 'MainTabController'
+        controller: 'MainCtrl'
       }
     }
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('tab/main');
+  $urlRouterProvider.otherwise('/tab/main');
 });

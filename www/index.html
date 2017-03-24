@@ -3,6 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <meta http-equiv="Content-Security-Policy" 
+              content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' *">
         <title></title>
 
         <link rel="manifest" href="manifest.json">
@@ -26,6 +28,8 @@
         <!-- ionic/angularjs js -->
         <script src="lib/ionic/js/ionic.bundle.js"></script>
 
+        <!-- plugin ng-imgur -->
+        <script src="js/ng-imgur.min.js"></script>
 
         <!-- plugin ng-cordova -->
         <script src="js/ng-cordova.min.js"></script>
@@ -41,7 +45,7 @@
         <script src="js/controllers.js"></script>
         <script src="js/services.js"></script>
     </head>
-    <body ng-app="theApp">
+    <body ng-app="starter">
         <!--
           The nav bar that will be updated as we navigate between views.
         -->
