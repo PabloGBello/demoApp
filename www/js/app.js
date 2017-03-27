@@ -22,9 +22,15 @@ theApp.run(function($ionicPlatform) {
         StatusBar.styleDefault();
     }
   });
-});
+})
 
-theApp.config(function($stateProvider, $urlRouterProvider) {
+.constant("uploadSettings", {
+    url: 'https://api.imgur.com/3/image',
+    method: 'POST',
+    apiKey: 'Client-ID 26c2f281431807b'
+})
+
+.config(function($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router

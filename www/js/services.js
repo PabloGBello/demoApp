@@ -1,10 +1,13 @@
 angular.module('starter.services', [])
 
-.factory('Images', function($cordovaImagePicker, $http) {
+.factory('Selector', function($cordovaImagePicker) {
 
-    function selectImage(){
+    function getURI(){
 
-        // config para elegir las imagenes
+        /*
+            Config para elegir las imagenes
+            No esta en constants
+        */
         var options = {
               maximumImagesCount: 1, 
               width: 800,
@@ -12,49 +15,75 @@ angular.module('starter.services', [])
               quality: 80           
         };
 
-        // Abre el explorador y espera a que se elija una imagen
-        $cordovaImagePicker.getPictures(options)
-            .then(
-                function (results) {
-                  convertToBase64(results[0], uploadToImgur);
-            });
+        return $cordovaImagePicker.getPictures(options)
+          .then(
+              function (results) {
+                return results[0];    
+              },
+              function(error){
+                return JSON.stringify(error);            
+          });       
     }
 
-    //Convierte la imagen dada por la URI a base64 y la retorna en el callback 
+  return {
+      selectImage: function(){
+          return getURI();
+      }
+  };
+})
+
+.factory('Uploader', function($http, uploadSettings) {
+
+    function upload(URI){
+        convertToBase64(URI, getImgurLink);
+    }
+
+    /*
+    *  Convierte el archivo dado por la URI a base64 y posteriormente llama al callback registrado con el resultado 
+    */
     function convertToBase64(path, callback){
+
+        /* 
+        *  Paso el path e intento traer el archivo
+        *  Success: el archivo (un objeto fileEntry)
+        */ 
         window.resolveLocalFileSystemURL(path, success, error);
                 
         function success(fileEntry) {
-            fileEntry.file(function(file) {
+
+            var readContent = function(file) {
+
                 var reader = new FileReader();
+
+                // El evento onloadend se va a ejecutar donde readAsDataURL se complete
                 reader.onloadend = function(e) {
                      var content = this.result;
                      callback(content);
                 };
                 reader.readAsDataURL(file);
-            });
+            };
+
+            fileEntry.file(readContent);
         }
 
         function error(error) {
-            alert("ERROR: file not found");
+            callback("ERROR: file not found");
         }
     }
 
-    // la funcion que se va a ejecutar en el callback luego de la conversion a Base64
-    var uploadToImgur = function(content){
+    /*
+    *   Funcion registrada en el callback luego de la conversion a Base64
+    *   @content: resultado base64
+    *   No retorna, hace un alert: hay que adaptar con código de branch Conf_De_Busq
+    */
+    var getImgurLink = function(content){
 
-        var settings = {
-              UPLOAD_URL: 'https://api.imgur.com/3/image',
-              UPLOAD_METHOD: 'POST',
-              API_KEY: 'Client-ID 26c2f281431807b'
-        };
-
-        var headerModel = { Authorization: settings.API_KEY },
+        var headerModel = { Authorization: uploadSettings.apiKey },
             dataModel   = { image: content.split(',')[1] };
 
-        $http({
-            method: settings.UPLOAD_METHOD,
-            url: settings.UPLOAD_URL,
+        return $http({
+            method: uploadSettings.method,
+            url:    uploadSettings.url,
             headers: headerModel,
             data:    dataModel
         })
@@ -63,13 +92,14 @@ angular.module('starter.services', [])
                 alert(response.data.data.link);
             }, 
             function errorCallback(response) {
+                alert(JSON.stringify(response));
         });
     };  
 
+
   return {
-      uploadSelected: function(){
-          return selectImage();
+      uploadToImgur: function(URI){
+          return upload(URI);
       }
   };
 });
-
