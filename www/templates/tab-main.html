@@ -1,12 +1,19 @@
 <ion-view view-title="Upload a Image to Imgur">
   <ion-content>
         <div style="width:50%; margin: auto;">
+            
             <button class="button button-block button-positive icon-right ion-search" ng-click="selectImage()">
                 Select a image
             </button>
+
             <button class="button button-block button-positive icon-right ion-search" ng-click="uploadImage()" ng-show="uploadEnabled">
                 Upload the image
             </button>
+
+            <button class="button button-block button-positive icon-right ion-search" ng-click="showResult()" ng-show="showEnabled">
+                Show results
+            </button>
+            
         </div> 
   </ion-content>
 </ion-view>
