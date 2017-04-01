@@ -73,7 +73,7 @@ angular.module('starter.services', [])
     /*
     *   Funcion registrada en el callback luego de la conversion a Base64
     *   @content: resultado base64
-    *   No retorna, hace un alert: hay que adaptar con código de branch Conf_De_Busq
+    *   No retorna, hace un alert: hay que adaptar con c?igo de branch Conf_De_Busq
     */
     var getImgurLink = function(content){
 
@@ -149,13 +149,14 @@ angular.module('starter.services', [])
     //return site;
     return getSearchURL(site)
     	.then(function(resultSite){
+    		console.log(resultSite);
     		return getSimilarImagesURL(resultSite)
     			.then(function(resultSite){
     				return $http.get(resultSite)
-				        .then(function(response){
+				       .then(function(response){
 				            return Parse(response.data);
-				        });
-		        }); 
+				       });
+		    	}); 
     	});
   }  
 
@@ -183,9 +184,14 @@ angular.module('starter.services', [])
   }
 
   function ParseSecondURL(URLResult){
-  	var iIndex = URLResult.indexOf("<a class=\"_Eu\" href=\"/search?sa");
+  	var iIndex = URLResult.indexOf("<a class=\"iu-card-header\" href=\"/search?sa");
+  	var sumStart = 33;
+  	if(iIndex == -1){
+  		iIndex = URLResult.indexOf("<a class=\"_Eu\" href=\"/search?sa");
+  		sumStart = 22;
+  	}
   	var fIndex = URLResult.indexOf(">Visually similar images</a>");
-  	return url + URLResult.substring(iIndex + 22,fIndex - 1).replace(/&amp;/g,'&');
+  	return url + URLResult.substring(iIndex + sumStart,fIndex - 1).replace(/&amp;/g,'&');
   }
 
 
