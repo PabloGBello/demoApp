@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-var theApp = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova']);
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova'])
 
-theApp.run(function($ionicPlatform) {
+.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -25,7 +25,6 @@ theApp.run(function($ionicPlatform) {
 
 .constant("uploadSettings", {
     url: 'https://api.imgur.com/3/image',
-    method: 'POST',
     apiKey: 'Client-ID 26c2f281431807b'
 })
 
@@ -45,22 +44,24 @@ theApp.run(function($ionicPlatform) {
   })
 
   // Each tab has its own nav history stack:
-
-  .state('tab.config', {
-    url: '/config',
-    views: {
-      'tab-config': {
-        templateUrl: 'templates/tab-config.html',
-        controller: 'ConfigCtrl'
-      }
-    }
-  })
   .state('tab.main', {
     url: '/main',
     views: {
       'tab-main': {
         templateUrl: 'templates/tab-main.html',
         controller: 'MainCtrl'
+      }
+    }
+  })
+ .state('tab.config', {
+    url: '/config',
+    params: {
+      url : null
+    },
+    views: {
+      'tab-config': {
+        templateUrl: 'templates/tab-config.html',
+        controller: 'ConfigCtrl'
       }
     }
   });
