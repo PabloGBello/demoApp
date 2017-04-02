@@ -9,7 +9,6 @@ var theApp = angular.module('starter', ['ionic', 'starter.controllers', 'starter
 
 theApp.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
-
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -47,6 +46,15 @@ theApp.run(function($ionicPlatform) {
 
   // Each tab has its own nav history stack:
 
+  .state('tab.config', {
+    url: '/config',
+    views: {
+      'tab-config': {
+        templateUrl: 'templates/tab-config.html',
+        controller: 'ConfigCtrl'
+      }
+    }
+  })
   .state('tab.main', {
     url: '/main',
     views: {

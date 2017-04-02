@@ -1,7 +1,4 @@
-
-
 angular.module('starter.controllers', [])
-
 
 .controller('MainCtrl', function($scope, $ionicPlatform, Selector, Uploader) {
     
@@ -36,7 +33,13 @@ angular.module('starter.controllers', [])
     $scope.showResult = function() {
        alert(imgurURL);
     };
-    
+})
+
+.controller('ConfigCtrl', function($scope, Search) {
+    Search.getData('http://i.imgur.com/MGccnVY.png')
+        .then(function(data){
+            $scope.images = data;  
+        });
 });
 
        
