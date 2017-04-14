@@ -40,12 +40,13 @@ angular.module('starter.controllers', [])
 
     var url = $stateParams.url;
     
-    Search.getData(url)//'http://i.imgur.com/MGccnVY.png'
+    Search.getData('http://i.imgur.com/MGccnVY.png')//'http://i.imgur.com/MGccnVY.png'
     .then(function(data){
-        $scope.images = data;  
+        console.log(JSON.stringify(data));
+        //$scope.images = data;  
     })
     .catch(function(reason){
-        alert(JSON.stringify(reason));
+        console.log(JSON.stringify(reason));
     });
 
 });

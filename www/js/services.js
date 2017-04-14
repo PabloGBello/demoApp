@@ -105,6 +105,7 @@ angular.module('starter.services', [])
     //return site;
     return getSearchURL(site)
     	.then(function(resultSite){
+        console.log(resultSite);
     		return getSimilarImagesURL(resultSite)
     			.then(function(resultSite){
     				return $http.get(resultSite)
@@ -233,7 +234,7 @@ angular.module('starter.services', [])
 							}
 						}
 					} catch (error) {
-						console.log(error)
+						console.log(error);
 					} 
 				}
 			}  		
@@ -256,14 +257,14 @@ angular.module('starter.services', [])
   		try {
   			data.f14w = parseInt(jSONObject.ow);
   		} catch (error) {
-  			console.log(error)
+  			console.log(error);
   		}
 	  }
 	  if ("oh" in jSONObject) {
 		  try {
   	 		data.f13h = parseInt(jSONObject.oh);
   		} catch (error) {
-  			console.log(error)
+  			console.log(error);
   		}
 	  }
 	  data.usg = is;
@@ -281,7 +282,7 @@ angular.module('starter.services', [])
   		  data.os = sizeToString(parseInt(os));		
   		}
 	  } catch (error) {
-		  console.log(error)
+		  console.log(error);
 	  }
 	  var s;
 	  if ("pt" in jSONObject) {
