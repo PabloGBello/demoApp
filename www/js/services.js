@@ -94,7 +94,7 @@ angular.module('starter.services', [])
   };
 
   // Basic Google URL + Image Search Query
-  const url = "https://www.google.com/";
+  const url = "http://www.google.com/";
     
   //Result - Array of Images  
   var postResult = [];
@@ -105,11 +105,14 @@ angular.module('starter.services', [])
     //return site;
     return getSearchURL(site)
     	.then(function(resultSite){
-        console.log(resultSite);
+        //console.log(resultSite);
+    		//return resultSite;
     		return getSimilarImagesURL(resultSite)
     			.then(function(resultSite){
+    				return resultSite;
     				return $http.get(resultSite)
 				       .then(function(response){
+				       		//return response.data;
 				            return Parse(response.data);
 				       });
 		    	}); 
@@ -125,7 +128,7 @@ angular.module('starter.services', [])
   }
 
   function ParseFirstURL(URLResult){
-  	var iIndex = URLResult.indexOf("<a href=\"/searchbyimage?site=imghp&amp;image_url=");
+  	var iIndex = URLResult.lastIndexOf("<a href=\"/searchbyimage?site=imghp&amp;image_url=");
   	var fIndex = URLResult.indexOf(">search by image</a>");
   	return url + URLResult.substring(iIndex + 10,fIndex - 1).replace(/&amp;/g ,'&');
   }
@@ -135,19 +138,18 @@ angular.module('starter.services', [])
   function getSimilarImagesURL(site){
  	return $http.get(site)
         .then(function(response){
-            return ParseSecondURL(response.data);
+            return url + ParseSecondURL(response.data);
         }); 	
   }
 
   function ParseSecondURL(URLResult){
-  	var iIndex = URLResult.indexOf("<a class=\"iu-card-header\" href=\"/search?sa");
-  	var sumStart = 33;
-  	if(iIndex == -1){
-  		iIndex = URLResult.indexOf("<a class=\"_Eu\" href=\"/search?sa");
-  		sumStart = 22;
-  	}
-  	var fIndex = URLResult.indexOf(">Visually similar images</a>");
-  	return url + URLResult.substring(iIndex + sumStart,fIndex - 1).replace(/&amp;/g,'&');
+  	var iIndex = URLResult.indexOf("id=\"imagebox_bigimages");
+  	var hrefIndex = URLResult.indexOf("href=\"/search?sa",iIndex);
+  
+  	//var hrefIndex = URLResult.lastIndexOf("href=\"/search?sa=X&amp;site=imghp&amp;") + 7;
+  	var fIndex = URLResult.indexOf("\">",hrefIndex);
+
+  	return URLResult.substring(hrefIndex + 7,fIndex).replace(/&amp;/g,'&');
   }
 
 

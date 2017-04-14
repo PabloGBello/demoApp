@@ -2,8 +2,8 @@ angular.module('starter.controllers', [])
 
 .controller('MainCtrl', function($scope, $state, Selector, Uploader) {
     
-    $scope.uploadEnabled = false;
-    $scope.showEnabled = false;
+    $scope.uploadEnabled = true;
+    $scope.showEnabled = true;
 
     var base64;
 
@@ -31,7 +31,7 @@ angular.module('starter.controllers', [])
 
     $scope.showResult = function() {
         $state.go('tab.config',{
-            url : $scope.imgurURL
+            url : 'http://i.imgur.com/MGccnVY.png'
         });
     };
 })
@@ -47,6 +47,11 @@ angular.module('starter.controllers', [])
     })
     .catch(function(reason){
         console.log(JSON.stringify(reason));
+        //$scope.images = data;  
+    })
+    .catch(function(reason){
+        alert(reason);
+        //alert(JSON.stringify(reason));
     });
 
 });
