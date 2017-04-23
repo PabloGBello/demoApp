@@ -95,13 +95,13 @@ angular.module('starter.services', [])
 
   // Basic Google URL + Image Search Query
   const url = "http://www.google.com/";
-    
+
   //Result - Array of Images  
   var postResult = [];
   
   //Retrieve raw data from Google Image Search    
   function getImageData(imageURL){
-    var site = url+"search?tbm=isch&q="+imageURL+"&site=imghp&gws_rd=cr";
+    var site = url+"search?tbm=isch&q="+imageURL+"&site=imghp&gws_rd=cr&fg=1";
     //return site;
     return getSearchURL(site)
     	.then(function(resultSite){
@@ -109,7 +109,7 @@ angular.module('starter.services', [])
     		//return resultSite;
     		return getSimilarImagesURL(resultSite)
     			.then(function(resultSite){
-    				return resultSite;
+    				//return resultSite;
     				return $http.get(resultSite)
 				       .then(function(response){
 				       		//return response.data;
@@ -129,8 +129,8 @@ angular.module('starter.services', [])
 
   function ParseFirstURL(URLResult){
   	var iIndex = URLResult.lastIndexOf("<a href=\"/searchbyimage?site=imghp&amp;image_url=");
-  	var fIndex = URLResult.indexOf(">search by image</a>");
-  	return url + URLResult.substring(iIndex + 10,fIndex - 1).replace(/&amp;/g ,'&');
+  	var fIndex = URLResult.indexOf("\">",iIndex);
+  	return url + URLResult.substring(iIndex + 10,fIndex).replace(/&amp;/g ,'&');
   }
 
 
