@@ -96,23 +96,29 @@ angular.module('starter.services', [])
   // Basic Google URL + Image Search Query
   const url = "http://www.google.com/";
 
-  //Result - Array of Images  
-  var postResult = [];
-  
+  var googleText = "";
+
+  function saveGoogleText(resultSite){
+  	var qIndex = resultSite.indexOf("&q=") + 3;
+  	var endIndex = resultSite.indexOf("&",qIndex);
+	googleText = resultSite.substring(qIndex,endIndex).replace(/\+/g ,' ');
+  }
+
   //Retrieve raw data from Google Image Search    
   function getImageData(imageURL){
     var site = url+"search?tbm=isch&q="+imageURL+"&site=imghp&gws_rd=cr&fg=1";
     //return site;
     return getSearchURL(site)
     	.then(function(resultSite){
-        //console.log(resultSite);
-    		//return resultSite;
+        	//console.log(resultSite);
     		return getSimilarImagesURL(resultSite)
     			.then(function(resultSite){
-    				//return resultSite;
+    				saveGoogleText(resultSite);
+    				//console.log(resultSite);
     				return $http.get(resultSite)
 				       .then(function(response){
-				       		return response.data;
+				       		response.GoogleText = googleText;
+				       		return response;
 				       });
 		    	}); 
     	});
@@ -224,7 +230,7 @@ angular.module('starter.services', [])
     getData: function(imageURL) {
         return getImageData(imageURL);
     },
-    
+
     //Multi parse extraction
   	Parse: function(SearchResult, result){
 		  var start = findStart(SearchResult, 0);

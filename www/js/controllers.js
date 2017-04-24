@@ -12,8 +12,10 @@ angular.module('starter.controllers', [])
         .then(function(value){
             base64 = value;
             $scope.uploadEnabled = true; 
+            $scope.showEnabled = false;
         })
         .catch(function(reason){
+            $scope.uploadEnabled = false; 
         });
     }; 
 
@@ -24,28 +26,33 @@ angular.module('starter.controllers', [])
             $scope.showEnabled = true; 
         })
         .catch(function(reason){
+            $scope.showEnabled = false; 
         });
     };
 
     $scope.showResult = function() {
+        $scope.uploadEnabled = false;
+        $scope.showEnabled = false;
         $state.go('tab.config',{
-            url : $scope.imgurURL //'http://i.imgur.com/MGccnVY.png'
+            url : $scope.imgurURL 
+            //url : 'http://i.imgur.com/MGccnVY.png'
         });
     };
 })
 
 .controller('ConfigCtrl', function($scope, $stateParams, Search) {
     $scope.images = [];
+    $scope.GoogleText = "";
     var url = $stateParams.url;
     
     Search.getData(url)
-    .then(function(data){
+    .then(function(response){
         $scope.images = [];
-        Search.Parse(data,$scope.images); 
+        $scope.GoogleText = response.GoogleText;
+        Search.Parse(response.data,$scope.images);
     })
     .catch(function(reason){
         console.log(JSON.stringify(reason));
-        //$scope.images = data;  
     })
 
 });
