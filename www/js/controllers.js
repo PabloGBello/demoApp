@@ -2,8 +2,8 @@ angular.module('starter.controllers', [])
 
 .controller('MainCtrl', function($scope, $state, Selector, Uploader) {
     
-    $scope.uploadEnabled = true;
-    $scope.showEnabled = true;
+    $scope.uploadEnabled = false;
+    $scope.showEnabled = false;
 
     var base64;
 
@@ -14,7 +14,6 @@ angular.module('starter.controllers', [])
             $scope.uploadEnabled = true; 
         })
         .catch(function(reason){
-
         });
     }; 
 
@@ -25,41 +24,28 @@ angular.module('starter.controllers', [])
             $scope.showEnabled = true; 
         })
         .catch(function(reason){
-
         });
     };
 
     $scope.showResult = function() {
         $state.go('tab.config',{
-            url : 'http://i.imgur.com/MGccnVY.png'
+            url : $scope.imgurURL //'http://i.imgur.com/MGccnVY.png'
         });
     };
 })
 
 .controller('ConfigCtrl', function($scope, $stateParams, Search) {
-
+    $scope.images = [];
     var url = $stateParams.url;
     
-    Search.getData('http://i.imgur.com/MGccnVY.png')//'http://i.imgur.com/MGccnVY.png'
+    Search.getData(url)
     .then(function(data){
-        console.log(JSON.stringify(data));
-        //$scope.images = data;  
+        $scope.images = [];
+        Search.Parse(data,$scope.images); 
     })
     .catch(function(reason){
         console.log(JSON.stringify(reason));
         //$scope.images = data;  
     })
-    .catch(function(reason){
-        alert(reason);
-        //alert(JSON.stringify(reason));
-    });
 
 });
-
-       
-
-
-
-
-
-
