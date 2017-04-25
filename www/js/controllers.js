@@ -4,6 +4,7 @@ angular.module('starter.controllers', [])
     
     $scope.uploadEnabled = false;
     $scope.showEnabled = false;
+    //$scope.showEnabled = true;
 
     var base64;
 
