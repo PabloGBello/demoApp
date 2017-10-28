@@ -3,7 +3,6 @@ angular.module('starter.services', [])
 .factory('Selector', function($cordovaCamera) {
 
     function getImage(){
-
         // Config para la el selector de imagenes
         var options = {
             destinationType : Camera.DestinationType.DATA_URL, 
@@ -95,48 +94,34 @@ angular.module('starter.services', [])
 
   // Basic Google URL + Image Search Query
   const url = "http://www.google.com/";
+  const imgSearch = "searchbyimage?&image_url=";
+  const txtSearch = "search?tbm=isch&q=";
 
   var googleText = "";
 
   function saveGoogleText(resultSite){
   	var qIndex = resultSite.indexOf("&q=") + 3;
   	var endIndex = resultSite.indexOf("&",qIndex);
-	googleText = resultSite.substring(qIndex,endIndex).replace(/\+/g ,' ');
+  	var rawText = resultSite.substring(qIndex,endIndex);
+	googleText = rawText.replace(/\+/g ,' ');
+	return rawText;
   }
 
   //Retrieve raw data from Google Image Search    
   function getImageData(imageURL){
-    var site = url+"search?tbm=isch&q="+imageURL+"&site=imghp&gws_rd=cr&fg=1";
-    //return site;
-    return getSearchURL(site)
-    	.then(function(resultSite){
-        	//console.log(resultSite);
-    		return getSimilarImagesURL(resultSite)
-    			.then(function(resultSite){
-    				saveGoogleText(resultSite);
-    				//console.log(resultSite);
-    				return $http.get(resultSite)
-				       .then(function(response){
-				       		response.GoogleText = googleText;
-				       		return response;
-				       });
-		    	}); 
-    	});
+    var site = url+imgSearch+imageURL;
+	return getSimilarImagesURL(site)
+		.then(function(resultSite){
+			var text = saveGoogleText(resultSite);
+			var searchURL = url + txtSearch + text;
+			return $http.get(searchURL)
+		       .then(function(response){
+		       		//console.log(response.data);
+		       		response.GoogleText = googleText;
+		       		return response;
+		       });
+    	}); 
   }  
-
-  //GET the first url 
-  function getSearchURL(site){
-  	return $http.get(site)
-        .then(function(response){
-            return ParseFirstURL(response.data);
-        });
-  }
-
-  function ParseFirstURL(URLResult){
-  	var iIndex = URLResult.lastIndexOf("<a href=\"/searchbyimage?site=imghp&amp;image_url=");
-  	var fIndex = URLResult.indexOf("\">",iIndex);
-  	return url + URLResult.substring(iIndex + 10,fIndex).replace(/&amp;/g ,'&');
-  }
 
   //GET the second url
   function getSimilarImagesURL(site){
@@ -148,7 +133,7 @@ angular.module('starter.services', [])
 
   function ParseSecondURL(URLResult){
   	var iIndex = URLResult.indexOf("id=\"imagebox_bigimages");
-  	var hrefIndex = URLResult.indexOf("href=\"/search?sa",iIndex);
+  	var hrefIndex = URLResult.indexOf("href=\"/search?",iIndex);
   	var fIndex = URLResult.indexOf("\">",hrefIndex);
 
   	return URLResult.substring(hrefIndex + 7,fIndex).replace(/&amp;/g,'&');

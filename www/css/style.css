@@ -5,3 +5,17 @@
   padding: 10px;
    }/* Empty. Add your own CSS if you like */
 
+.img-detail {
+	display:block;
+	margin:auto;
+	position:relative;
+	top:15px; 
+	width: 95%;
+  	height: 80%;
+}
+
+.progressbar-top {
+	position: absolute;
+	top: 0px;
+	margin: 1px;
+}

@@ -64,6 +64,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'ConfigCtrl'
       }
     }
+  })
+
+ .state('tab.detail', {
+    url: '/detail',
+    params: {
+      img : null
+    },
+    views: {
+      'tab-config': {
+        templateUrl: 'templates/tab-detail.html',
+        controller: 'DetailCtrl'
+      }
+    }
   });
 
   // if none of the above states are matched, use this as the fallback
