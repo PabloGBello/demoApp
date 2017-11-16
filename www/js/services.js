@@ -5,8 +5,8 @@ angular.module('starter.services', [])
     function getImage(){
         // Config para la el selector de imagenes
         var options = {
-            destinationType : Camera.DestinationType.DATA_URL, 
-            sourceType : Camera.PictureSourceType.PHOTOLIBRARY, 
+            destinationType : Camera.DestinationType.DATA_URL,
+            sourceType : Camera.PictureSourceType.PHOTOLIBRARY,
             allowEdit : false,
             saveToPhotoAlbum: false
         };
@@ -15,10 +15,10 @@ angular.module('starter.services', [])
         .then(
             function(imageData) {
               return "data:image/jpeg;base64," + imageData;
-            }, 
+            },
             function(error) {
-              return JSON.stringify(error);      
-        }); 
+              return JSON.stringify(error);
+        });
     }
 
   return {
@@ -44,7 +44,7 @@ angular.module('starter.services', [])
         .then(
             function successCallback(response) {
                 return response.data.data.link;
-            }, 
+            },
             function errorCallback(error) {
                 return JSON.stringify(error);
         });
@@ -85,7 +85,7 @@ angular.module('starter.services', [])
      f22W : "w",
      ZOOM : "zoom"
   };
-  
+
   //AccessibilityNodeInfoCompat constants
   var AccessibilityNodeInfoCompat = {
 	 ACTION_DISMISS : 1048576,
@@ -95,7 +95,7 @@ angular.module('starter.services', [])
   // Basic Google URL + Image Search Query
   const url = "http://www.google.com/";
   const imgSearch = "searchbyimage?&image_url=";
-  const txtSearch = "search?tbm=isch&q=";
+  const txtSearch = "search?gl=us&tbm=isch&q=";
 
   var googleText = "";
 
@@ -107,9 +107,9 @@ angular.module('starter.services', [])
 	return rawText;
   }
 
-  //Retrieve raw data from Google Image Search    
+  //Retrieve raw data from Google Image Search
   function getImageData(imageURL){
-    var site = url+imgSearch+imageURL;
+	var site = url+imgSearch+imageURL;
 	return getSimilarImagesURL(site)
 		.then(function(resultSite){
 			var text = saveGoogleText(resultSite);
@@ -120,32 +120,35 @@ angular.module('starter.services', [])
 		       		response.GoogleText = googleText;
 		       		return response;
 		       });
-    	}); 
-  }  
+    	});
+  }
 
   //GET the second url
   function getSimilarImagesURL(site){
  	return $http.get(site)
         .then(function(response){
             return url + ParseSecondURL(response.data);
-        }); 	
+        });
   }
 
   function ParseSecondURL(URLResult){
-  	var iIndex = URLResult.indexOf("id=\"imagebox_bigimages");
+    var iIndex = URLResult.indexOf("id=\"imagebox_bigimages");
+    if(!iIndex || iIndex == -1){
+      iIndex = URLResult.indexOf("<div class=\"main\"");
+    }
+
   	var hrefIndex = URLResult.indexOf("href=\"/search?",iIndex);
   	var fIndex = URLResult.indexOf("\">",hrefIndex);
-
-  	return URLResult.substring(hrefIndex + 7,fIndex).replace(/&amp;/g,'&');
+	  return URLResult.substring(hrefIndex + 7,fIndex).replace(/&amp;/g,'&');
   }
 
-  //Retrieve the start position 
+  //Retrieve the start position
   function findStart(line,end){
     var start = line.indexOf("<a", end);
     if (start < 0) {
       return start;
     }
-    var e = line.indexOf("</a>", start); 
+    var e = line.indexOf("</a>", start);
     if (e < 0) {
       return e;
     }
@@ -157,9 +160,9 @@ angular.module('starter.services', [])
     if (c >= e || r >= e) {
         return findStart(line, e + 4);
     }
-    return start; 
+    return start;
   }
-  
+
   //Utils function
   function sizeToString(size) {
   	if (size > AccessibilityNodeInfoCompat.ACTION_DISMISS) {
@@ -174,7 +177,7 @@ angular.module('starter.services', [])
   	  return parseInt(size) + 'd bytes';
   	}
   }
-  
+
   //Ascii2Native function
   function ascii2Native(ascii) {
 	if (!ascii) {
@@ -299,9 +302,9 @@ angular.module('starter.services', [])
 							}
 						} catch (error) {
 							console.log(error);
-						} 
+						}
 					}
-				}  		
+				}
 	  	  }
 		  var srcStart = sub.indexOf("src=\"");
 		  data.src = sub.substring(srcStart + 5, sub.indexOf("\"", srcStart + 5));
@@ -343,7 +346,7 @@ angular.module('starter.services', [])
 		  }
 		  try {
 	  		if(os){
-	  		  data.os = sizeToString(parseInt(os));		
+	  		  data.os = sizeToString(parseInt(os));
 	  		}
 		  } catch (error) {
 			  console.log(error);
@@ -359,7 +362,7 @@ angular.module('starter.services', [])
 		  if (s) {
 			  data.title = ascii2Native(s);
 		  }
-		  var isu = jSONObject.isu;	  
+		  var isu = jSONObject.isu;
 		  if (isu) {
 			  data.cite = ascii2Native(isu);
 		  }
@@ -371,7 +374,7 @@ angular.module('starter.services', [])
 		  }
 		  if ("tw" in jSONObject) {
 			  data.tbnw = parseInt(jSONObject.tw);
-		  }  
+		  }
 		  if ("ou" in jSONObject) {
 			  data.imgurl = jSONObject.ou;
 		  }
