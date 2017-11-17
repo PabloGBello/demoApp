@@ -1,6 +1,13 @@
-# Specifies intentionally untracked files to ignore when using Git
-# http://git-scm.com/docs/gitignore
-
+.vscode/launch.json
+.vscode/plugins.json
+.vscode/typings/angularjs/angular.d.ts
+.vscode/typings/cordova-ionic/plugins/keyboard.d.ts
+.vscode/typings/cordova/cordova.d.ts
+.vscode/typings/cordova/plugins/Camera.d.ts
+.vscode/typings/cordova/plugins/FileSystem.d.ts
+.vscode/typings/cordova/plugins/FileTransfer.d.ts
+.vscode/typings/ionic/ionic.d.ts
+.vscode/typings/jquery/jquery.d.ts
 node_modules/
 platforms/
 plugins/

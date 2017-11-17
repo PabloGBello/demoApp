@@ -1,10 +1,10 @@
 angular.module('starter.controllers', [])
 
 .controller('MainCtrl', function($scope, $state, Selector, Uploader) {
-    
+
     $scope.uploadEnabled = false;
-    //$scope.showEnabled = false;
-    $scope.showEnabled = true;
+    $scope.showEnabled = false;
+    //$scope.showEnabled = true;
 
     var base64;
 
@@ -12,22 +12,22 @@ angular.module('starter.controllers', [])
         Selector.selectImage()
         .then(function(value){
             base64 = value;
-            $scope.uploadEnabled = true; 
+            $scope.uploadEnabled = true;
             $scope.showEnabled = false;
         })
         .catch(function(reason){
-            $scope.uploadEnabled = false; 
+            $scope.uploadEnabled = false;
         });
-    }; 
+    };
 
     $scope.uploadImage = function() {
         Uploader.uploadToImgur(base64)
         .then(function(value){
             $scope.imgurURL = value;
-            $scope.showEnabled = true; 
+            $scope.showEnabled = true;
         })
         .catch(function(reason){
-            $scope.showEnabled = false; 
+            $scope.showEnabled = false;
         })
     };
 
@@ -35,8 +35,8 @@ angular.module('starter.controllers', [])
         $scope.uploadEnabled = false;
         $scope.showEnabled = false;
         $state.go('tab.config',{
-           //url : $scope.imgurURL  
-            url : 'http://i.imgur.com/MGccnVY.png'
+            url : $scope.imgurURL
+            //url : 'http://i.imgur.com/MGccnVY.png'
         });
     };
 })
@@ -45,7 +45,7 @@ angular.module('starter.controllers', [])
     $scope.images = [];
     $scope.GoogleText = "";
     var url = $stateParams.url;
-    
+
     if(url){
       Search.getData(url)
         .then(function(response){
@@ -55,20 +55,20 @@ angular.module('starter.controllers', [])
         })
         .catch(function(reason){
             console.log(JSON.stringify(reason));
-        }); 
+        });
     }
 
     $scope.showDetail = function(image) {
       $state.go('tab.detail',{
         img : image
-      }); 
+      });
     }
 
 })
 
 
 .controller('DetailCtrl', function($scope, $stateParams, $cordovaFileTransfer, $ionicPopup) {
-    $scope.image = $stateParams.img;  
+    $scope.image = $stateParams.img;
 
     $scope.downloadImage = function(image) {
       var url = $scope.image.imgurl,
